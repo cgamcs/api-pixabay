@@ -2,6 +2,8 @@ const resultado = document.querySelector('#resultado')
 const formulario = document.querySelector('#formulario')
 
 const  registrosPorPagina = 20
+let totalPaginas
+let iterador
 
 window.onload = () => {
     formulario.addEventListener('submit', validarFormulario)
@@ -47,10 +49,17 @@ function buscarImagenes(termino) {
     fetch(url)
         .then(respuesta => respuesta.json())
         .then(resultado => {
-            const totalPaginas = calcularPaginas(resultado.totalHits)
+            totalPaginas = calcularPaginas(resultado.totalHits)
             console.log(totalPaginas)
             mostrarImagenes(resultado.hits)
         })
+}
+
+// Generador que va a registrar la cantidad de elementos de acuredo a las paginas
+function *crearPaginador(total) {
+    for(let i = 1; i <= total; i++) {
+        yield i
+    }
 }
 
 function calcularPaginas(total) {
@@ -83,4 +92,11 @@ function mostrarImagenes(imagenes) {
             </div>
         `
     })
+
+    imprimirPaginador()
+}
+
+function imprimirPaginador() {
+    iterador = crearPaginador(totalPaginas)
+    console.log(iterador.next())
 }
