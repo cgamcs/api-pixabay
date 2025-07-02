@@ -79,22 +79,21 @@ function mostrarImagenes(imagenes) {
     imagenes.forEach(imagen => {
         const { previewURL, likes, views, largeImageURL } = imagen
         
-        resultado.innerHTML += `
-            <div class="w-1/2 md:w-1/3 lg:w-1/4 p-3 mb-4">
-                <div class="bg-white rounded-lg">
-                    <img class="w-full rounded-lg" src="${previewURL}">
+        const tarjeta = document.createElement("div");
+        tarjeta.classList.add("break-inside-avoid", "mb-4", "bg-white", "rounded-lg", "overflow-hidden", "shadow");
 
-                    <div class="p-4">
-                        <p class="font-bold">${likes} <span class="font-normal">Me gusta</span></p>
-                        <p class="font-bold mb-5">${views} <span class="font-normal">Veces vista</span></p>
-                        
-                        <a href="${largeImageURL}" target="_blank" rel="noopener noreferrer" class="underline">
-                            Ver Imagen
-                        </a>
-                    </div>
-                </div>
+        tarjeta.innerHTML = `
+            <img class="w-full rounded-t-lg" src="${previewURL}" />
+            <div class="p-4">
+                <p class="font-bold">${likes} <span class="font-normal">Me gusta</span></p>
+                <p class="font-bold mb-5">${views} <span class="font-normal">Veces vista</span></p>
+                <a href="${largeImageURL}" target="_blank" rel="noopener noreferrer" class="underline">
+                    Ver Imagen
+                </a>
             </div>
-        `
+        `;
+
+        resultado.appendChild(tarjeta);
     })
 
     // Limpiar anterior paginador
