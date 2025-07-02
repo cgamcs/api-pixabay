@@ -1,7 +1,8 @@
 const resultado = document.querySelector('#resultado')
 const formulario = document.querySelector('#formulario')
+const paginacionDiv = document.querySelector('#paginacion')
 
-const  registrosPorPagina = 20
+const  registrosPorPagina = 40
 let totalPaginas
 let iterador
 
@@ -44,7 +45,7 @@ function mostrarAlerta(mensaje) {
 
 function buscarImagenes(termino) {
     const key = '51107069-5acf2a92e7bc8ed91b2ba2566'
-    const url = `https://pixabay.com/api/?key=${key}&q=${termino}`
+    const url = `https://pixabay.com/api/?key=${key}&q=${termino}&per_page=${registrosPorPagina}`
 
     fetch(url)
         .then(respuesta => respuesta.json())
@@ -93,10 +94,29 @@ function mostrarImagenes(imagenes) {
         `
     })
 
+    // Limpiar anterior paginador
+    while(paginacionDiv.firstChild) {
+        paginacionDiv.removeChild(paginacionDiv.firstChild)
+    }
+
     imprimirPaginador()
 }
 
 function imprimirPaginador() {
     iterador = crearPaginador(totalPaginas)
-    console.log(iterador.next())
+
+    while(true) {
+        const { value, done } = iterador.next()
+
+        if(done) return
+
+        // Caso contrario, genera un boton por cada elemento del generador
+        const boton = document.createElement('A')
+        boton.href = '#'
+        boton.dataset.pagina = value
+        boton.textContent = value
+        boton.classList.add('siguiente', 'bg-yellow-400', 'px-4', 'py-1', 'mr-2', 'font-bold', 'mb-10', 'uppercase', 'rounded')
+
+        paginacionDiv.appendChild(boton)
+    }
 }
